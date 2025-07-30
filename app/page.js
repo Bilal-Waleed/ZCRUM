@@ -1,4 +1,5 @@
 export default function Home() {
+  let a; 
   return (
     <div>
       <h1>Home</h1>
@@ -13,3 +14,4 @@ export default function Home() {
     </div>
   );
 }
+
