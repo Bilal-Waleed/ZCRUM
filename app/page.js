@@ -1,7 +1,7 @@
-import CampanyCarousel from "@/components/campanyCarousel";
+import CampanyCarousel from "@/components/companyCarousel";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {  BarChart, Calendar, ChevronRight, Layout } from "lucide-react";
+import { BarChart, Calendar, ChevronRight, Layout } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -45,22 +45,25 @@ export default function Home() {
           </span>
         </h1>
         <p className="text-xl font-gray-300 mb-10 max-w-3xl mx-auto">
-          Empower your team with a unified platform for project management, collaboration, and task management Solution.</p>
+          Empower your team with a unified platform for project management,
+          collaboration, and task management Solution.
+        </p>
         <Link href="/onboarding">
-          <Button size={"lg"} className={"mr-4"}>Get Started <ChevronRight size={18}/></Button>
+          <Button size={"lg"} className={"mr-4"}>
+            Get Started <ChevronRight size={18} />
+          </Button>
         </Link>
         <Link href="#features">
-          <Button size={"lg"} className={"mr-4"} variant={"outline"}>Learn More
-            <ChevronRight size={18} className="ml-1"/></Button>
+          <Button size={"lg"} className={"mr-4"} variant={"outline"}>
+            Learn More
+            <ChevronRight size={18} className="ml-1" />
+          </Button>
         </Link>
-
       </section>
 
       <section className="py-20 bg-gray-900 px-5" id="features">
         <div className="container mx-auto">
-          <h3 className="text-3xl font-bold mb-12 text-center">
-            Key Features
-          </h3>
+          <h3 className="text-3xl font-bold mb-12 text-center">Key Features</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {features.map((feature, index) => {
               return (
@@ -82,11 +85,9 @@ export default function Home() {
           <h3 className="text-3xl font-bold mb-12 text-center">
             Trusted by Industry Leaders
           </h3>
-          <CampanyCarousel/>
+          <CampanyCarousel />
         </div>
       </section>
-
     </div>
   );
 }
-
