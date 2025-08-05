@@ -11,7 +11,7 @@ const Header = async () => {
     await checkUser();
   return (
     <header className='container max-auto'>
-        <nav className='flex items-center justify-between py-6 px-4'>
+        <nav className='flex items-center justify-between py-6 px-8'>
             <Link href="/">
                 <Image src="/logo2.png" width={200} height={56} alt="zcrum-logo" className='h-10 object-contain w-auto' />
             </Link> 
