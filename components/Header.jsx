@@ -6,6 +6,7 @@ import { Button } from './ui/button'
 import { PenBox } from 'lucide-react'
 import UserMenu from './user-menu'
 import { checkUser } from '@/lib/check-user'
+import UserLoading from './user-loading'
 
 const Header = async () => {
     await checkUser();
@@ -33,6 +34,8 @@ const Header = async () => {
             </SignedIn>
         </div>
         </nav>
+
+        <UserLoading/>
     </header>
    
 
