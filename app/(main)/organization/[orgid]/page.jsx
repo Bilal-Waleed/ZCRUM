@@ -4,7 +4,7 @@ import OrgSwitcher from '@/components/org-switcher';
 import React from 'react'
 
 const Organization = async ({ params }) => {
-  const { orgId } = params; 
+  const { orgId } = await params; 
 
   const organization = await getOrganization(orgId);
 
