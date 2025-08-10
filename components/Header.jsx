@@ -16,7 +16,7 @@ const Header = async () => {
                 <Image src="/logo2.png" width={200} height={56} alt="zcrum-logo" className='h-10 object-contain w-auto' />
             </Link> 
         <div className='flex items-center gap-4'>
-            <Link href= '/project/create'>
+            <Link href= "/project/create">
                 <Button variant="destructive" className='flex items-center gap-2'>
                     <PenBox size={20} />
                     <span>Create project</span>

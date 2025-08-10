@@ -13,13 +13,15 @@ export default clerkMiddleware(async (auth,req) =>{
   if(!userId && isProtectedRoute(req)){
     return auth().redirectToSignIn();
   }
+  console.log("MIDDLEWARE ORG ID", orgId);
 
   if(
     userId &&
     !orgId &&
     req.nextUrl.pathname !== "/onboarding" &&
     req.nextUrl.pathname !== "/" &&
-    !req.nextUrl.pathname.startsWith("/organization")
+    !req.nextUrl.pathname.startsWith("/organization") &&
+    req.nextUrl.pathname !== "/project/create"
   ) {
     return NextResponse.redirect(new URL("/onboarding", req.url));
   }
