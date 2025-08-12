@@ -9,11 +9,17 @@ import { projectSchema } from "@/app/lib/validators";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import useFetch from "@/hooks/use-fetch";
+import { createProject } from "@/actions/project";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const createProjectPage = () => {
     const { isLoaded: isOrgLoaded, membership } = useOrganization();
     const { isLoaded: isUserLoaded } = useUser();
     const [ isAdmin , setIsAdmin ] = useState(false);
+
+    const router = useRouter();
 
     const {register, handleSubmit, formState: {errors}} =  useForm({
         resolver: zodResolver(projectSchema),
@@ -25,10 +31,21 @@ const createProjectPage = () => {
         }
     }, [isOrgLoaded, membership, isUserLoaded]);
 
-    const onSubmit = async (data) => {}
+    const {data: project, loading, error, fn: createProjectFn}= useFetch(createProject);
 
+    useEffect(() => {
+        if(project ){
+            toast.success("Project created successfully!");
+            router.push(`/project/${project.id}`);
+        }
+    }, [loading]);
+    
     if (!isOrgLoaded || !isUserLoaded) {
         return null;
+    }
+    
+    const onSubmit = async (data) => {
+        createProjectFn(data);
     }
 
     if (!isAdmin) {
@@ -49,35 +66,37 @@ const createProjectPage = () => {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <Input
-                id = 'name'
-                className="bg-slate-950"
-                placeholder="Project Name"
-                {...register("name")}
+                    id = "name"
+                    className="bg-slate-950"
+                    placeholder="Project Name"
+                    {...register("name")}
                 />
                 {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}  
             </div>
             <div>
                 <Input
-                id = 'key'
-                className="bg-slate-950"
-                placeholder="Project key (EX: RCBT-1234)"
-                {...register("key")}
+                    id = "key"
+                    className="bg-slate-950"
+                    placeholder="Project key (EX: RCBT-1234)"
+                    {...register("key")}
                 />
                 {errors.key && <p className="text-red-500 text-sm mt-1">{errors.key.message}</p>}  
             </div>
             <div>
                 <Textarea
-                id = 'description'
-                className="bg-slate-950 h-24"
-                placeholder="Project Description"
-                {...register("description")}
+                    id = "description"
+                    className="bg-slate-950 h-24"
+                    placeholder="Project Description"
+                    {...register("description")}
                 />
                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}  
             </div>
 
-            <Button type="submit" className="bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600">
-                Create Project
+            <Button disabled={loading} type="submit" className="bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600">
+                {loading ? "Creating..." : "Create Project"}
             </Button>
+
+            {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
         </form>
     </div>
   ) 
