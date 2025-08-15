@@ -6,6 +6,7 @@ import React from 'react'
 const Organization = async ({ params }) => {
   const { orgId } = await params; 
 
+  // console.log(orgId);
   const organization = await getOrganization(orgId);
 
   if (!organization) {

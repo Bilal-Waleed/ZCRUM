@@ -66,19 +66,19 @@ const createProjectPage = () => {
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <Input
-                    id = "name"
+                    id ="name"
+                    {...register("name")}
                     className="bg-slate-950"
                     placeholder="Project Name"
-                    {...register("name")}
                 />
                 {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}  
             </div>
             <div>
                 <Input
-                    id = "key"
+                    id ="key"
+                    {...register("key")}
                     className="bg-slate-950"
                     placeholder="Project key (EX: RCBT-1234)"
-                    {...register("key")}
                 />
                 {errors.key && <p className="text-red-500 text-sm mt-1">{errors.key.message}</p>}  
             </div>

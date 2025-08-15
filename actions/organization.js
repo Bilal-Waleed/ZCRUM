@@ -4,7 +4,7 @@ import { db } from "@/lib/prisma";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
 export async function getOrganization(slug) {
-    const { userId } = await auth();
+    const { userId } = auth();
 
     if (!userId) {
         throw new Error("User not authenticated");
@@ -21,6 +21,7 @@ export async function getOrganization(slug) {
     const organization = await clerkClient().organizations.getOrganization({
         slug
     });
+    console.log(organization.id)
 
     if (!organization) {
         return null;
