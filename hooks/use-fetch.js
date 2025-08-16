@@ -1,6 +1,5 @@
 import { toast } from "sonner";
-
-const { useState } = require("react")
+import {useState}  from "react";
 
 const useFetch = (cb)=>{
     const [data, setData] = useState(undefined)
