@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,18 +9,16 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Card, CardContent } from "@/components/ui/card";
-
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { CalendarIcon } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import { format, addDays } from "date-fns";
-
 import useFetch from "@/hooks/use-fetch";
-
 import { sprintSchema } from "@/lib/validators";
 import { createSprint } from "@/actions/sprint";
+import { toast } from "sonner";
 
 export default function SprintCreationForm({
   projectTitle,
@@ -60,7 +57,8 @@ export default function SprintCreationForm({
       endDate: dateRange.to,
     });
     setShowForm(false);
-    router.refresh(); // Refresh the page to show updated data
+    toast.success("Sprint created successfully!");
+    router.refresh();
   };
 
   return (
