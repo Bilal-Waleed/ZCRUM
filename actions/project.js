@@ -96,3 +96,39 @@ export async function deleteProject(projectId) {
 
   return { success: true };
 }
+
+export async function getProject(projectId) {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
+  const project = await db.project.findUnique({
+    where: { id: projectId },
+    include: {
+      sprints: {
+        orderBy: { createdAt: "desc" },
+      },
+    },
+  });
+
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  const { data: membership } =
+    await clerkClient().organizations.getOrganizationMembershipList({
+      organizationId: project.organizationId,
+    });
+
+  const userMembership = membership.find(
+    (m) => m.publicUserData.userId === userId
+  );
+
+  if (!userMembership) {
+    throw new Error("User does not have access to this project");
+  }
+
+  return project;
+}

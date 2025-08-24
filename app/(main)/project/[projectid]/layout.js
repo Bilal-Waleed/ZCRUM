@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { Suspense } from 'react'
+import { BarLoader } from 'react-spinners'
 
 const ProjectLayout =async ({children}) => {
   return (
-    <div>{children}</div>
+    <div className='mx-auto p-8'> 
+        <Suspense fallback = {<BarLoader width={"100%"} color = "#36d7b7" />}>
+        {children}
+        </Suspense>
+    </div>
   )
 }
 
