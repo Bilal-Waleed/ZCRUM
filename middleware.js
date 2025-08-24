@@ -14,13 +14,13 @@ export default clerkMiddleware((auth, req) => {
     return auth().redirectToSignIn();
   }
 
-  if (
-    auth().userId &&
-    !auth().orgId &&
-    req.nextUrl.pathname !== "/onboarding" &&
-    req.nextUrl.pathname !== "/"&&
-    !req.nextUrl.pathname.startsWith("/organization") &&
-    req.nextUrl.pathname !== "/project/create"
+ if (
+  auth().userId &&
+  !auth().orgId &&
+  req.nextUrl.pathname !== "/onboarding" &&
+  req.nextUrl.pathname !== "/" &&
+  !req.nextUrl.pathname.startsWith("/organization") &&
+  !req.nextUrl.pathname.startsWith("/project")
   ) {
     return NextResponse.redirect(new URL("/onboarding", req.url));
   }

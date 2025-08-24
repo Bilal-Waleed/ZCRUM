@@ -19,7 +19,7 @@ export async function createProject(formData) {
     throw new Error("Organization not found");
   }
 
-  const { data: membership } = await clerkClient.organizations.getOrganizationMembershipList({
+  const { data: membership } = await clerkClient().organizations.getOrganizationMembershipList({
     organizationId: orgId,
   });
 
@@ -40,4 +40,59 @@ export async function createProject(formData) {
   } catch (error) {
     throw new Error("Error creating project: " + error.message);
   }
+}
+
+export async function getProjects(orgId) {
+  const { userId } = auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+  const user = await db.user.findUnique({
+    where: { clerkUserId: userId },
+  })
+
+  if(!user){
+    throw new Error("User not found");
+  }
+
+  const projects = await db.project.findMany({
+    where: { organizationId: orgId },
+    orderBy: { createdAt : "desc" },
+  });
+
+  return projects;
+}
+
+export async function deleteProject(projectId) {
+  const { userId } = auth();
+
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
+  const project = await db.project.findUnique({
+    where: { id: projectId },
+  });
+
+  if (!project) {
+    throw new Error("Project not found");
+  }
+
+  const { data: membership } = await clerkClient().organizations.getOrganizationMembershipList({
+    organizationId: project.organizationId,
+  });
+
+  const userMembership = membership.find(
+    (member) => member.publicUserData.userId === userId
+  );
+
+  if (!userMembership || userMembership.role !== "org:admin") {
+    throw new Error("User does not have permission to delete this project");
+  }
+
+  await db.project.delete({
+    where: { id: projectId },
+  });
+
+  return { success: true };
 }
