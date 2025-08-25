@@ -42,5 +42,62 @@ export async function createSprint(projectId, data) {
       status: "PLANNED",
       projectId,
     },
+  }); 
+}
+
+export async function updateSprintStatus(sprintId, newStatus) {
+  const { userId } = auth();
+  if (!userId) {
+    throw new Error("User not authenticated");
+  }
+
+  // sprint nikal lo
+  const sprint = await db.sprint.findUnique({
+    where: { id: sprintId },
+    include: { project: true },
   });
+
+  if (!sprint) {
+    throw new Error("Sprint not found");
+  }
+
+  const orgId = sprint.project.organizationId;
+
+  // ab user ki membership check karo Clerk se
+  const { data: memberships } =
+    await clerkClient.organizations.getOrganizationMembershipList({
+      organizationId: orgId,
+    });
+
+  const userMembership = memberships.find(
+    (m) => m.publicUserData.userId === userId
+  );
+
+  if (!userMembership) {
+    throw new Error("User does not have permission to update this sprint");
+  }
+
+  const role = userMembership.role;
+  if (role !== "org:admin") {
+    throw new Error("Only admins can update sprint status");
+  }
+
+  const now = new Date();
+  const startDate = new Date(sprint.startDate);
+  const endDate = new Date(sprint.endDate);
+
+  if (newStatus === "ACTIVE" && (now < startDate || now > endDate)) {
+    throw new Error("Sprint can only be started within its start and end dates");
+  }
+
+  if (newStatus === "COMPLETED" && sprint.status !== "ACTIVE") {
+    throw new Error("Only active sprints can be completed");
+  }
+
+  const updatedSprint = await db.sprint.update({
+    where: { id: sprintId },
+    data: { status: newStatus },
+  });
+
+  return { success: true, sprint: updatedSprint };
 }
