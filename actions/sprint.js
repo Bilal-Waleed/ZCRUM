@@ -10,7 +10,6 @@ export async function createSprint(projectId, data) {
     throw new Error("User not authenticated");
   }
 
-  // project find karo pehle
   const project = await db.project.findUnique({
     where: { id: projectId },
   });
@@ -21,7 +20,6 @@ export async function createSprint(projectId, data) {
 
   const orgId = project.organizationId;
 
-  // user ka membership check karo
   const { data: memberships } = await clerkClient.organizations.getOrganizationMembershipList({
     organizationId: orgId,
   });
@@ -51,7 +49,6 @@ export async function updateSprintStatus(sprintId, newStatus) {
     throw new Error("User not authenticated");
   }
 
-  // sprint nikal lo
   const sprint = await db.sprint.findUnique({
     where: { id: sprintId },
     include: { project: true },
@@ -63,7 +60,6 @@ export async function updateSprintStatus(sprintId, newStatus) {
 
   const orgId = sprint.project.organizationId;
 
-  // ab user ki membership check karo Clerk se
   const { data: memberships } =
     await clerkClient.organizations.getOrganizationMembershipList({
       organizationId: orgId,

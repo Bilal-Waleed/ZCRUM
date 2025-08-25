@@ -17,7 +17,7 @@ import { formatDistanceToNow, isAfter, isBefore, format } from "date-fns";
 import useFetch from "@/hooks/use-fetch";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { updateSprintStatus } from "@/actions/sprints";
+import { updateSprintStatus } from "@/actions/sprint";
 
 export default function SprintManager({
   sprint,
